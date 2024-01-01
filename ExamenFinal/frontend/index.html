@@ -49,44 +49,44 @@
 
                     <div class="modal-body">
                         
-                        <div class="container-fluid bg-info mb-2">
+                        <div class="container-fluid mb-2">
                             <!--CREAR-->
-                            <div class="container bg-primary">
+                            <div class="container contenedor">
                                 <h3>Crear:</h3>
                                 <div class="d-flex flex-row justify-content-evenly align-items-center mt-2">
-                                    <div class="w-50 bg-success">
+                                    <div class="w-50">
                                         <input id="crearU" name="crearU" placeholder="Username" class="h-50 w-75"/>
                                     </div>
                                     
-                                    <div class="w-50 bg-warning">
+                                    <div class="w-50">
                                         <input type="password" id="crearP" name="crearP" placeholder="Password" class="h-50 w-75"/>
                                     </div>
 
-                                    <button type="submit" name="crearButton" class="btn btn-secondary">Crear</button>
+                                    <button type="submit" name="crearButton" class="btn btn-primary">Crear</button>
                                     
                                 </div>
 
                             </div>
 
                             <!--BUSCAR-->
-                            <div class="container bg-secondary mt-5 ">
+                            <div class="container mt-5 contenedor">
                                 <h3>Buscar:</h3>
                                 <div class="d-flex flex-column align-items-center">
-                                    <input id="buscaruser" name="buscaruser" class="form-control h-50 w-75 mb-3" placeholder="Nombre de usuario"/>
+                                    <input id="buscaruser" name="buscaruser" class="form-control h-50 w-50 mb-3" placeholder="Nombre de usuario"/>
                                     <button type="submit" name="buscarbutton" class="btn btn-primary w-25">Buscar</button>
                                 </div>
                             </div>
 
                             <!--MODIFICAR-->
-                            <div class="container cont-modificar bg-success mt-3">
+                            <div class="container cont-modificar mt-3 contenedor">
                                 <div class="d-flex flex-column justify-content-evenly align-items-center">
                                     <div class="d-flex flex-row justify-content-evenly w-100">
-                                        <div class="w-50 bg-success">
+                                        <div class="w-50">
                                             <label for="modificarU">Username</label>
                                             <input id="modificarU" name="modificarU" class="form-control h-50 w-75 mb-3"/>
                                         </div>
                                         
-                                        <div class="w-50 bg-warning">
+                                        <div class="w-50">
                                             <label for="modificarP">Password</label>
                                             <input type="text" id="modificarP" name="modificarP" class="form-control h-50 w-75 mb-3"/>
                                         </div>
@@ -121,6 +121,12 @@
                 var username = document.getElementById('crearU').value;
                 var password = document.getElementById('crearP').value;
 
+                // Verificar que los campos no estén vacíos
+                if (username === '' || password === '') {
+                    alert('Por favor, complete todos los campos.');
+                    return;
+                }
+
                 // Objeto con datos a enviar
                 var data = {
                     username: username,
@@ -143,20 +149,38 @@
                 })
                 .then(data => {
                     // Manejar la respuesta del servidor
-                    console.log(data);
+                    alert(data.message)
                 })
                 .catch(error => {
                     // Manejar errores
+                    alert('Error en la solicitud al servidor');
                     console.error('Error:', error);
                 });
+
+                document.getElementById('crearU').value = '';
+                document.getElementById('crearP').value = '';
             }
 
             function modificarDatos() {
+                var usernamebuscar = document.getElementById('buscaruser').value;
                 var username = document.getElementById('modificarU').value;
                 var password = document.getElementById('modificarP').value;
 
+                // Verificar que haya un usuario en el input de buscar
+                if (usernamebuscar === '') {
+                    alert('Por favor, busque un usuario.');
+                    return;
+                }
+
+                // Verificar que los campos no estén vacíos
+                if (username === '' || password === '') {
+                    alert('Por favor, complete todos los campos.');
+                    return;
+                }
+
                 // Objeto con datos a enviar
                 var data = {
+                    buscaruser: usernamebuscar,
                     username: username,
                     password: password
                 };
@@ -177,22 +201,31 @@
                 })
                 .then(data => {
                     // Manejar la respuesta del servidor
-                    console.log(data);
+                    alert(data.message)
                 })
                 .catch(error => {
                     // Manejar errores
+                    alert('Error en la solicitud al servidor');
                     console.error('Error:', error);
                 });
+
+                document.getElementById('modificarU').value = '';
+                document.getElementById('modificarP').value = '';
+                document.getElementById('buscarbutton').value = '';
             }
 
             function eliminarDatos() {
-                var username = document.getElementById('modificarU').value;
-                var password = document.getElementById('modificarP').value;
+                var username = document.getElementById('buscaruser').value;
+
+                // Verificar que no ingrese una cadena vacia
+                if (username === '') {
+                    alert('Por favor, busque un usuario.');
+                    return;
+                }
 
                 // Objeto con datos a enviar
                 var data = {
                     username: username,
-                    password: password
                 };
 
                 // Configurar la solicitud
@@ -212,15 +245,26 @@
                 .then(data => {
                     // Manejar la respuesta del servidor
                     console.log(data);
+                    alert(data.message)
                 })
                 .catch(error => {
                     // Manejar errores
+                    alert('Error en la solicitud al servidor');
                     console.error('Error:', error);
                 });
+
+                document.getElementById('modificarU').value = '';
+                document.getElementById('modificarP').value = '';
             }
 
             function buscarDatos() {
                 var username = document.getElementById('buscaruser').value;
+
+                // Verificar que no ingrese una cadena vacia
+                if (username === '') {
+                    alert('Por favor, ingrese un nombre de usuario.');
+                    return;
+                }
 
                 // Objeto con datos a enviar
                 var data = {
@@ -243,14 +287,23 @@
                 })
                 .then(data => {
                     // Manejar la respuesta del servidor
-                    console.log(data);
+                    if (data) {
+                        // Llenar los campos con los datos obtenidos
+                        document.getElementById('modificarU').value = data.username;
+                        document.getElementById('modificarP').value = data.password;
+                        alert("Usuario encontrado");
+                    } else {
+                        alert('Usuario no encontradooo');
+                        console.log(data.message);
+                    }
                 })
                 .catch(error => {
                     // Manejar errores
+                    alert('Error en la solicitud al servidor');
                     console.error('Error:', error);
                 });
             }
-            
+
             function validarCredenciales() {
                 var username = document.getElementById('username').value;
                 var password = document.getElementById('password').value;
