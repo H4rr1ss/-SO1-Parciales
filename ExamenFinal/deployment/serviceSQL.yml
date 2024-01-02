@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-hgomez202103718-service
+spec:
+  selector:
+    app: app-hgomez202103718
+  ports:
+  - protocol: TCP
+    port: 3306  # Usar el puerto estándar MySQL
+    targetPort: 3306
+  type: NodePort

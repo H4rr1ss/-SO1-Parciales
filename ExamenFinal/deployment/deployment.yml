@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-hgomez202103718-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-hgomez202103718
+  template:
+    metadata:
+      labels:
+        app: app-hgomez202103718
+    spec:
+      containers:
+      - name: app-hgomez202103718-container
+        image: h4rr1ss/finalhgomez202103718:latest
+        ports:
+        - containerPort: 3000
+      - name: mysqldb-hgomez202103718
+        image: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "12345"
+          - name: MYSQL_DATABASE
+            value: "hgomez202103718"

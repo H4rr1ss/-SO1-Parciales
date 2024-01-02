@@ -12,11 +12,11 @@ const __dirname = dirname(__filename);
 app.use(express.json());
 
 const pool = createPool({
-    host: "mysqldb_hgomez202103718",
+    host: "mysql-hgomez202103718-service",
     user: "root",
     password: "12345",
     database: "hgomez202103718",
-    port: 3306,// Se coloca el puerto del contenedor
+    port: 3306,  // Este es el puerto de tu servicio NodePort
     connectionLimit: 10,
 });
 
